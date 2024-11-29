@@ -1,0 +1,44 @@
+
+
+
+"""
+
+NE MARCHE PAS
+
+
+"""
+
+
+drop table AUTEUR;
+drop table TABLEAUX;
+drop table COULOIRS;
+
+
+create TABLE AUTEUR(
+    ID INT PRIMARY KEY,
+    nom TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE TABLEAUX(
+    ID INT PRIMARY KEY,
+    nom TEXT NOT NULL,
+    auteur TEXT NOT NULL,
+    tags TEXT NOT NULL,
+    descri TEXT,
+    année DATE NOT NULL,
+    FOREIGN KEY (auteur) REFERENCES AUTEUR(nom)
+);
+
+CREATE TABLE COULOIRS(
+    ID INT PRIMARY KEY,
+    thème TEXT NOT NULL
+);
+
+"""
+CREATE TABLE TABL_COUL(
+    IDT INT PRIMARY KEY,
+    IDC TEXT NOT NULL
+);
+"""
+
+INSERT INTO COULOIRS VALUES(1,'tuile')
