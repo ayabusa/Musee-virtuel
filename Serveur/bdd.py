@@ -11,7 +11,7 @@ def recuperer_theme_couloir(couloir_id: int)->str:
 def recuperer_liste_tableau(couloir_id: int)->list:
     # Renvoie une liste des id des tableaux appartenant a un couloir
     # A faire
-    pass
+    return []
 
 def recuperer_nom_tableau(tableau_id: int)->str:
     # Renvoie le nom du tableau à partir de son id
