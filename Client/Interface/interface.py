@@ -8,6 +8,7 @@ SIZE_TEXTE = 50
 BLACK = (0,0,0)
 WHITE = (255,255,255)
 SIZE = 400
+GREEN = (0,255,0)
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -76,18 +77,10 @@ while True:
             txt,
             (
                 SCREEN_WIDTH / 2 - txt_rect.width / 2, # centrer sur Ox
-                SCREEN_HEIGHT / 2 - total_height + (1 + 2*y) * txt_rect.height / 2
+                SCREEN_HEIGHT / 2 - total_height + (1 + 2*y) * txt_rect.height / 2 
             )
         )
 
-    # screen.blit(text_2,(
-    #    SCREEN_WIDTH / 2 - text_rect.width / 2,
-    #     SCREEN_HEIGHT / 2 - text_rect.height / 2
-    #     ))
-    # screen.blit(text_3,(
-    #     SCREEN_WIDTH / 2 - text_rect.width / 2,
-    #     SCREEN_HEIGHT / 2 - text_rect.height / 2
-    # ))
     draw_buttons(screen)
     pygame.display.flip()
 
