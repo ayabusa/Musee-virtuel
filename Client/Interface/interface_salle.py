@@ -114,15 +114,11 @@ def run_room(theme_index):
                 pygame.quit()
                 exit()
 
-            # Gestion des touches
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    player.speed_x = -10  # Vitesse de mouvement à gauche
-                if event.key == pygame.K_RIGHT:
-                    player.speed_x = 10  # Vitesse de mouvement à droite
-            if event.type == pygame.KEYUP:
-                if event.key in (pygame.K_LEFT, pygame.K_RIGHT):
-                    player.speed_x = 0  # Arrêter le mouvement lorsque la touche est relâchée
+        # Gestion des touches
+        keys = pygame.key.get_pressed()
+        # Vitesse de mouvement à droite et à gauche
+        dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+        player.speed_x = dx * 10
 
         # Mise à jour des sprites
         all_sprites.update()
