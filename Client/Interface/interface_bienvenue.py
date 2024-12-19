@@ -1,8 +1,7 @@
 import pygame, sys, math, random
-
-SCREEN_WIDTH = 1020
-SCREEN_HEIGHT = 600
-RES = WIDTH, HEIGHT = 1020, 600
+SCREEN_WIDTH = 1900
+SCREEN_HEIGHT = 1080
+RES = WIDTH, HEIGHT = 1900, 1080
 HALF_W, HALF_H = WIDTH / 2, HEIGHT / 2
 SIZE_TEXTE = 50
 BLACK = (0,0,0)
@@ -23,13 +22,12 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit() # déplacé depuis le bas du code vers ici.
             sys.exit()
-            # running = False # remplacé par le while True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             m_pos = pygame.mouse.get_pos()
             for btn in buttons:
                 btn_rect = buttons[btn]
                 if btn_rect.collidepoint(m_pos) and pygame.mouse.get_pressed()[0]:
-                    print('HELLO WORLD!')
+                    from Interface import interface_salle
 
     offset_y = 80
     enter_button = pygame.Rect(
@@ -53,7 +51,6 @@ while True:
             enter_button.y + enter_button.height / 2 - enter_rect.height / 2
 
         ))
-
     screen.fill("white")
 
     font = pygame.font.Font(None,SIZE_TEXTE)
@@ -80,6 +77,7 @@ while True:
                 SCREEN_HEIGHT / 2 - total_height + (1 + 2*y) * txt_rect.height / 2 
             )
         )
+    
 
     draw_buttons(screen)
     pygame.display.flip()
