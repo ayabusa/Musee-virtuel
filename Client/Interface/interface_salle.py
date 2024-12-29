@@ -10,9 +10,7 @@ FPS = 60
 
 # Thèmes
 THEME = [
-    "GUERRE",
     "PAIX",
-    "SANTE MENTALE",
     "EMOTIONS",
     "NATURE",
     "ABSTRAIT",
@@ -23,9 +21,7 @@ THEME = [
 
 # Couleurs associées aux thèmes
 THEME_STYLES = {
-    "GUERRE": (255, 0, 0),
     "PAIX": (0, 255, 0),
-    "SANTE MENTALE": (128, 0, 128),
     "EMOTIONS": (255, 165, 0),
     "NATURE": (34, 139, 34),
     "ABSTRAIT": (75, 0, 130),
@@ -36,15 +32,13 @@ THEME_STYLES = {
 
 # Dictionnaire pour les images de fond des thèmes
 THEME_IMAGES = {
-    "GUERRE": "thème_nature.png",
-    "PAIX": "thème_paix.png",
-    "SANTE MENTALE": "thème_sante_mentale.png",
-    "EMOTIONS": "thème_emotions.png",
-    "NATURE": "thème_nature.png",
-    "ABSTRAIT": "thème_abstrait.png",
-    "NOTRE COLLECTION PERSONEL": "thème_collection_personel.png",
-    "STREET ART": "thème_street_art.png",
-    "DIVERS": "thème_divers.png"
+    "PAIX": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "EMOTIONS": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "NATURE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "ABSTRAIT": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "NOTRE COLLECTION PERSONEL": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "STREET ART": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "DIVERS": ".\Musee-virtuel\Client\Interface\Thème_nature.png"
 }
 
 # Initialisation de l'écran
@@ -57,7 +51,7 @@ font = pygame.font.Font(None, 74)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load("sprite.png").convert_alpha()  # Charge l'image du joueur
+        self.image = pygame.image.load(".\Musee-virtuel\Client\Interface\sprite.png").convert_alpha()  # Charge l'image du joueur
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position plus haute
         self.speed_x = 0
