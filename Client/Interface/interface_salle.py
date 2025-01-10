@@ -32,15 +32,17 @@ THEME_STYLES = {
 
 # Dictionnaire pour les images de fond des thèmes
 THEME_IMAGES = {
-    "PAIX": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "EMOTIONS": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "NATURE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "ABSTRAIT": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "NOTRE COLLECTION PERSONEL": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "STREET ART": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "DIVERS": ".\Musee-virtuel\Client\Interface\Thème_nature.png"
-}
 
+    "GUERRE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "PAIX": ".\Musee-virtuel\Client\Interface\Thème_paix.png",
+    "SANTE MENTALE": ".\Musee-virtuel\Client\Interface\Thème_sante_mentale.png",
+    "EMOTIONS": ".\Musee-virtuel\Client\Interface\Thème_emotions.png",
+    "NATURE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
+    "ABSTRAIT": ".\Musee-virtuel\Client\Interface\Thème_abstrait.png",
+    "NOTRE COLLECTION PERSONEL": ".\Musee-virtuel\Client\Interface\Thème_collection_personel.png",
+    "STREET ART": ".\Musee-virtuel\Client\Interface\Thème_street_art.png",
+    "DIVERS": ".\Musee-virtuel\Client\Interface\Thème_divers.png"
+}
 # Initialisation de l'écran
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
