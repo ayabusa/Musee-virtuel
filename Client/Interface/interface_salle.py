@@ -10,9 +10,7 @@ FPS = 60
 
 # Thèmes
 THEME = [
-    "GUERRE",
     "PAIX",
-    "SANTE MENTALE",
     "EMOTIONS",
     "NATURE",
     "ABSTRAIT",
@@ -23,9 +21,7 @@ THEME = [
 
 # Couleurs associées aux thèmes
 THEME_STYLES = {
-    "GUERRE": (255, 0, 0),
     "PAIX": (0, 255, 0),
-    "SANTE MENTALE": (128, 0, 128),
     "EMOTIONS": (255, 165, 0),
     "NATURE": (34, 139, 34),
     "ABSTRAIT": (75, 0, 130),
@@ -36,6 +32,7 @@ THEME_STYLES = {
 
 # Dictionnaire pour les images de fond des thèmes
 THEME_IMAGES = {
+
     "GUERRE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
     "PAIX": ".\Musee-virtuel\Client\Interface\Thème_paix.png",
     "SANTE MENTALE": ".\Musee-virtuel\Client\Interface\Thème_sante_mentale.png",
@@ -46,7 +43,6 @@ THEME_IMAGES = {
     "STREET ART": ".\Musee-virtuel\Client\Interface\Thème_street_art.png",
     "DIVERS": ".\Musee-virtuel\Client\Interface\Thème_divers.png"
 }
-
 # Initialisation de l'écran
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 

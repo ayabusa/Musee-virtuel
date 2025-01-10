@@ -13,8 +13,13 @@ app = Flask(__name__)
 # the associated function.
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
-def hello_world():
-    return 'Hello World'
+def help():
+    return '''
+Voilà l'API pour le musée virtuel, tu peux l'utiliser comme suit:</br>
+GET /get_couloirs_liste</br>
+GET /get_tableaux_from_couloir/&ltcouloir_id&gt</br>
+'''
+
 
 @app.route('/get_couloirs_liste')
 def get_couloirs_liste():
