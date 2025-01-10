@@ -29,8 +29,8 @@ def recuperer_nom_tableau(tableau_id: int)->str:
 
 def recuperer_auteur_tableau(tableau_id: int)->str:
     # Renvoie l'auteur du tableau à partir de son id
-    # A faire
-    pass
+    res = cur.execute("SELECT nom FROM TABLEAUX JOIN AUTEUR ON TABLEAUX.id=AUTEUR.id WHERE TABLEAUX.id=?",(tableau_id,))
+    return res.fetchone()[0]
 
 def recuperer_description_tableau(tableau_id: int)->str:
     # Renvoie la description du tableau à partir de son id
@@ -43,5 +43,5 @@ def recuperer_date_tableau(tableau_id: int)->str:
     pass
 
 print(recuperer_liste_tableau(2))
-print(recuperer_nom_tableau(1))
-print(recuperer_nom_tableau(2))
+print(recuperer_auteur_tableau(1))
+print(recuperer_auteur_tableau(2))
