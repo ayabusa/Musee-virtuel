@@ -19,8 +19,8 @@ def recuperer_theme_couloir(couloir_id: int)->str:
 
 def recuperer_liste_tableau(couloir_id: int)->list:
     # Renvoie une liste des id des tableaux appartenant a un couloir
-    # A faire
-    return []
+    res = cur.execute("SELECT id FROM TABLEAUX WHERE salle_id=?",(couloir_id,))
+    return [i[0] for i in res.fetchall()]
 
 def recuperer_nom_tableau(tableau_id: int)->str:
     # Renvoie le nom du tableau à partir de son id
@@ -42,3 +42,4 @@ def recuperer_date_tableau(tableau_id: int)->str:
     # A faire
     pass
 
+print(recuperer_liste_tableau(3))
