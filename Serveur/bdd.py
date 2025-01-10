@@ -1,7 +1,16 @@
+import sqlite3
+
+with open('bdd.sql', 'r') as sql_file:
+    sql_script = sql_file.read()
+
+con = sqlite3.connect("../bdd.db")
+cur = con.cursor()
+cur.executescript(sql_script)
+
 def recuperer_liste_couloir()->list:
     # Renvoie une liste des id de tout les couloirs
-    # A faire
-    return []
+    res = cur.execute("SELECT id FROM SALLE")
+    return [i[0] for i in res.fetchall()]
 
 def recuperer_theme_couloir(couloir_id: int)->str:
     # Renvoie le thème du couloir à partir de son id

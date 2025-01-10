@@ -1,8 +1,8 @@
-drop table AUTEUR;
-drop table TABLEAUX;
-drop table SALLE;
-drop table NUM_TABLEAU;
-drop table TAGS;
+drop table IF EXISTS AUTEUR;
+drop table IF EXISTS TABLEAUX;
+drop table IF EXISTS SALLE;
+drop table IF EXISTS NUM_TABLEAU;
+drop table IF EXISTS TAGS;
 
 create TABLE AUTEUR(
     nom TEXT PRIMARY KEY
@@ -23,7 +23,7 @@ CREATE TABLE TABLEAUX(
 
 CREATE TABLE SALLE(
     ID INT PRIMARY KEY,
-    thème TEXT NOT NULL
+    theme TEXT NOT NULL
 );
 
 CREATE TABLE NUM_TABLEAU(
@@ -38,6 +38,8 @@ INSERT into AUTEUR VALUES('jean pierre polanreff');
 INSERT into TAGS VALUES('puant');
 INSERT into TABLEAUX VALUES('caca',1,1);
 INSERT into SALLE VALUES(1,'dechet');
+INSERT into SALLE VALUES(2,'wow');
+INSERT into SALLE VALUES(3,'incr');
 INSERT into NUM_TABLEAU VALUES(1,'caca',1);
 
 
