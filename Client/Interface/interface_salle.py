@@ -8,9 +8,11 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 1900, 1080
 ROOM_WIDTH, ROOM_HEIGHT = 3000, 1080  # Dimensions de la salle plus grandes que l'écran
 FPS = 60
 
-# Thèmes
+# Thèmes (pour la gestion de l'exemple)
 THEME = [
+    "GUERRE",
     "PAIX",
+    "SANTE MENTALE",
     "EMOTIONS",
     "NATURE",
     "ABSTRAIT",
@@ -21,7 +23,9 @@ THEME = [
 
 # Couleurs associées aux thèmes
 THEME_STYLES = {
+    "GUERRE": (255, 0, 0),
     "PAIX": (0, 255, 0),
+    "SANTE MENTALE": (128, 0, 128),
     "EMOTIONS": (255, 165, 0),
     "NATURE": (34, 139, 34),
     "ABSTRAIT": (75, 0, 130),
@@ -32,17 +36,17 @@ THEME_STYLES = {
 
 # Dictionnaire pour les images de fond des thèmes
 THEME_IMAGES = {
-
-    "GUERRE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "PAIX": ".\Musee-virtuel\Client\Interface\Thème_paix.png",
-    "SANTE MENTALE": ".\Musee-virtuel\Client\Interface\Thème_sante_mentale.png",
-    "EMOTIONS": ".\Musee-virtuel\Client\Interface\Thème_emotions.png",
-    "NATURE": ".\Musee-virtuel\Client\Interface\Thème_nature.png",
-    "ABSTRAIT": ".\Musee-virtuel\Client\Interface\Thème_abstrait.png",
-    "NOTRE COLLECTION PERSONEL": ".\Musee-virtuel\Client\Interface\Thème_collection_personel.png",
-    "STREET ART": ".\Musee-virtuel\Client\Interface\Thème_street_art.png",
-    "DIVERS": ".\Musee-virtuel\Client\Interface\Thème_divers.png"
+    "GUERRE": ".\\Client\\Interface\\Thème_nature.png",
+    "PAIX": ".\\Client\\Interface\\Thème_paix.png",
+    "SANTE MENTALE": ".\\Client\\Interface\\Thème_sante_mentale.png",
+    "EMOTIONS": ".\\Client\\Interface\\Thème_emotions.png",
+    "NATURE": ".\\Client\\Interface\\Thème_nature.png",
+    "ABSTRAIT": ".\\Client\\Interface\\Thème_abstrait.png",
+    "NOTRE COLLECTION PERSONEL": ".\\Client\\Interface\\Thème_collection_personel.png",
+    "STREET ART": ".\\Client\\Interface\\Thème_street_art.png",
+    "DIVERS": ".\\Client\\Interface\\Thème_divers.png"
 }
+
 # Initialisation de l'écran
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -53,9 +57,9 @@ font = pygame.font.Font(None, 74)
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.image.load(".\Musee-virtuel\Client\Interface\sprite.png").convert_alpha()  # Charge l'image du joueur
+        self.image = pygame.image.load(".\\Client\\Interface\\sprite.png").convert_alpha()  # Charge l'image du joueur
         self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position plus haute
+        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position initiale du joueur
         self.speed_x = 0
 
     def update(self):
@@ -69,7 +73,7 @@ class Player(pygame.sprite.Sprite):
 
 # Classe Porte
 class Door(pygame.sprite.Sprite):
-    def __init__(self, position):
+    def __init__(self, position, is_left=False):
         super().__init__()
         self.image = pygame.Surface((50, SCREEN_HEIGHT))
         self.image.fill((255, 255, 255))
@@ -78,6 +82,32 @@ class Door(pygame.sprite.Sprite):
             self.rect.right = ROOM_WIDTH
         elif position == "left":
             self.rect.left = 0
+
+# Classe Caméra
+class Camera:
+    def __init__(self, width, height):
+        self.camera = pygame.Rect(0, 0, width, height)
+        self.width = width
+        self.height = height
+
+    def apply(self, entity):
+        if isinstance(entity, pygame.Rect):
+            return entity.move(self.camera.topleft)
+        else:
+            return entity.rect.move(-self.camera.topleft[0], -self.camera.topleft[1])
+
+    def update(self, target):
+        # Calculer la position de la caméra pour centrer sur le joueur
+        x = -target.rect.centerx + SCREEN_WIDTH // 2
+        y = -target.rect.centery + SCREEN_HEIGHT // 2
+
+        # Limiter le mouvement de la caméra aux bords de la salle
+        x = min(0, x)  # Ne pas dépasser le bord gauche
+        y = min(0, y)  # Ne pas dépasser le bord haut
+        x = max(-(self.width - SCREEN_WIDTH), x)  # Ne pas dépasser le bord droit
+        y = max(-(self.height - SCREEN_HEIGHT), y)  # Ne pas dépasser le bord bas
+
+        self.camera = pygame.Rect(x, y, self.width, self.height)
 
 # Fonction pour exécuter une salle
 def run_room(theme_index):
@@ -90,7 +120,7 @@ def run_room(theme_index):
 
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
     background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
-    background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    background_image = pygame.transform.scale(background_image, (ROOM_WIDTH, ROOM_HEIGHT))
 
     # Mettre à jour le titre de la fenêtre
     pygame.display.set_caption(f"Salle du {theme}")
@@ -101,6 +131,9 @@ def run_room(theme_index):
     door_right = Door("right")
     door_left = Door("left")
     all_sprites.add(player, door_right, door_left)
+
+    # Initialisation de la caméra
+    camera = Camera(ROOM_WIDTH, ROOM_HEIGHT)
 
     while running:
         clock.tick(FPS)
@@ -119,6 +152,9 @@ def run_room(theme_index):
         # Mise à jour des sprites
         all_sprites.update()
 
+        # Mise à jour de la caméra pour suivre le joueur
+        camera.update(player)
+
         # Vérification de collision avec les portes
         if pygame.sprite.collide_rect(player, door_right):
             print(f"Porte droite atteinte! Transition vers le thème suivant: {THEME[theme_index + 1] if theme_index + 1 < len(THEME) else 'Fin' }")
@@ -128,11 +164,12 @@ def run_room(theme_index):
             return max(theme_index - 1, 0)
 
         # Affichage
-        screen.blit(background_image, (0, 0))  # Afficher l'image de fond redimensionnée
+        screen.fill((0, 0, 0))  # Effacer l'écran
+        screen.blit(background_image, camera.apply(pygame.Rect(0, 0, ROOM_WIDTH, ROOM_HEIGHT)))  # Appliquer la caméra
 
         # Affichage des sprites
         for sprite in all_sprites:
-            screen.blit(sprite.image, (sprite.rect.x, sprite.rect.y))
+            screen.blit(sprite.image, camera.apply(sprite))
 
         # Affichage du thème
         theme_text = font.render(theme, True, (0, 0, 0))
