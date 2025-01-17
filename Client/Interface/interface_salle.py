@@ -54,24 +54,6 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # Police pour afficher le thème
 font = pygame.font.Font(None, 74)
 
-# Classe Joueur
-class Player(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.image.load(os.path.join("Client", "Interface", "sprite.png")).convert_alpha()  # Charge l'image du joueur
-        self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position plus haute
-        self.speed_x = 0
-
-    def update(self):
-        self.rect.x += self.speed_x
-
-        # Limiter le déplacement aux bords visibles de l'écran
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.right > SCREEN_WIDTH:  # Restreint au bord visible
-            self.rect.right = SCREEN_WIDTH
-
 # Classe Porte
 class Door(pygame.sprite.Sprite):
     def __init__(self, position):
@@ -96,21 +78,21 @@ def run_room(theme_index):
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
     try:
         background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
-        background_image = pygame.transform.scale(background_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        background_image = pygame.transform.scale(background_image, (ROOM_WIDTH, SCREEN_HEIGHT))
     except pygame.error:
         print(f"Erreur : L'image pour le thème '{theme}' est introuvable.")
-        background_image = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+        background_image = pygame.Surface((ROOM_WIDTH, SCREEN_HEIGHT))
         background_image.fill(theme_color)
 
     # Mettre à jour le titre de la fenêtre
     pygame.display.set_caption(f"Salle du {theme}")
 
-    # Initialisation des sprites
-    all_sprites = pygame.sprite.Group()
-    player = Player()
+    # Initialisation de la caméra (position de la vue dans la salle)
+    camera_x = 0
+
+    # Initialisation des portes
     door_right = Door("right")
     door_left = Door("left")
-    all_sprites.add(player, door_right, door_left)
 
     while running:
         clock.tick(FPS)
@@ -122,24 +104,26 @@ def run_room(theme_index):
 
         # Gestion des touches
         keys = pygame.key.get_pressed()
-        player.speed_x = (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * 10
+        
+        # Déplacement de la caméra (simuler un mouvement à la première personne)
+        if keys[pygame.K_RIGHT]:
+            camera_x += 10  # Déplacement à droite
+        if keys[pygame.K_LEFT]:
+            camera_x -= 10  # Déplacement à gauche
 
-        # Mise à jour des sprites
-        all_sprites.update()
+        # Limiter le mouvement de la caméra aux bords de la salle
+        camera_x = max(0, min(camera_x, ROOM_WIDTH - SCREEN_WIDTH))
 
         # Vérification de collision avec les portes
-        if pygame.sprite.collide_rect(player, door_right):
+        if camera_x + SCREEN_WIDTH >= ROOM_WIDTH:  # Arrivée à la porte droite
             print(f"Porte droite atteinte! Transition vers le thème suivant : {THEME[theme_index + 1] if theme_index + 1 < len(THEME) else 'Fin'}")
             return theme_index + 1
-        if pygame.sprite.collide_rect(player, door_left):
+        if camera_x <= 0:  # Arrivée à la porte gauche
             print(f"Porte gauche atteinte! Retour au thème précédent : {THEME[theme_index - 1] if theme_index - 1 >= 0 else 'Début'}")
             return max(theme_index - 1, 0)
 
         # Affichage
-        screen.blit(background_image, (0, 0))  # Afficher l'image de fond redimensionnée
-
-        # Affichage des sprites
-        all_sprites.draw(screen)  # Simplification de l'affichage des sprites
+        screen.blit(background_image, (-camera_x, 0))  # Afficher l'image de fond décalée par la position de la caméra
 
         # Affichage du thème
         theme_text = font.render(theme, True, (0, 0, 0))
