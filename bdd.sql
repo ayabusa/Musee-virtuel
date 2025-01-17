@@ -19,6 +19,9 @@ CREATE TABLE TABLEAUX(
     auteur_id INT NOT NULL,
     tag_id TEXT,
     salle_id INT,
+    format TEXT,
+    description TEXT,
+    date TEXT,
 
     FOREIGN KEY (auteur_id) REFERENCES AUTEUR(id),
     FOREIGN KEY (tag_id) REFERENCES TAGS(tag),
@@ -33,8 +36,8 @@ CREATE TABLE SALLE(
 INSERT into AUTEUR VALUES(1,'jean pierre polanreff');
 INSERT into AUTEUR VALUES(2,'zebi la mouche');
 INSERT into TAGS VALUES('puant');
-INSERT into TABLEAUX VALUES(1,'caca',1,1, 2);
-INSERT into TABLEAUX VALUES(2,'prout',1,2, 2);
+INSERT into TABLEAUX VALUES(1,'caca',1,1, 2, "paysage", "un super tableau de fifou", "4/4/2024");
+INSERT into TABLEAUX VALUES(2,'prout',1,2, 2, "portrait", "celui là par contre il est guez", "1/1/2027");
 INSERT into SALLE VALUES(1,'dechet');
 INSERT into SALLE VALUES(2,'wow');
 INSERT into SALLE VALUES(3,'incr');

@@ -34,12 +34,17 @@ class DB:
         res = self.cur.execute("SELECT nom FROM TABLEAUX JOIN AUTEUR ON TABLEAUX.id=AUTEUR.id WHERE TABLEAUX.id=?",(tableau_id,))
         return res.fetchone()[0]
 
+    def recuperer_format_tableau(self,tableau_id: int)->str:
+        # Renvoie le format (paysage, portrait ou carré)
+        res = self.cur.execute("SELECT format FROM TABLEAUX WHERE id=?",(tableau_id,))
+        return res.fetchone()[0]
+
     def recuperer_description_tableau(self,tableau_id: int)->str:
         # Renvoie la description du tableau à partir de son id
-        # A faire
-        pass
+        res = self.cur.execute("SELECT description FROM TABLEAUX WHERE id=?",(tableau_id,))
+        return res.fetchone()[0]
 
     def recuperer_date_tableau(self,tableau_id: int)->str:
         # Renvoie la date du tableau à partir de son id
-        # A faire
-        pass
+        res = self.cur.execute("SELECT date FROM TABLEAUX WHERE id=?",(tableau_id,))
+        return res.fetchone()[0]
