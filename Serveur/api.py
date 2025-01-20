@@ -32,12 +32,13 @@ def get_couloirs_liste():
 @app.route('/get_tableaux_from_couloir/<couloir_id>')
 def get_tableaux_from_couloir(couloir_id):
     db = bdd.DB()
-    liste_des_tableaux = {1: ["nom", "auteur_id", "tags", "descriptionn", "date"], 2: ["nom", "auteur_id", "tags", "descriptionn", "date"]}
+    liste_des_tableaux = {}
     for idt in db.recuperer_liste_tableau(couloir_id):
-        liste_des_tableaux[idt] = [db.recuperer_nom_tableau(idt),
-                                   db.recuperer_auteur_tableau(idt),
-                                   db.recuperer_description_tableau(idt),
-                                   db.recuperer_date_tableau(idt)]
+        liste_des_tableaux[idt] = {"nom": db.recuperer_nom_tableau(idt),
+                                   "auteur": db.recuperer_auteur_tableau(idt),
+                                   "description": db.recuperer_description_tableau(idt),
+                                   "date": db.recuperer_date_tableau(idt),
+                                   "format": db.recuperer_format_tableau(idt)}
     return jsonify(liste_des_tableaux)
 
 
