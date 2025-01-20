@@ -6,14 +6,19 @@ pygame.init()
 
 # Constantes de la fenêtre
 SCREEN_WIDTH, SCREEN_HEIGHT = 1900, 1080
-ROOM_WIDTH, ROOM_HEIGHT = 3000, 1080  # Dimensions de la salle plus grandes que l'écran
 FPS = 60
+
+# Dimensions des carrés et espacement
+CARRE_WIDTH = 200
+CARRE_SPACING = 100
+NUM_CARRES = 10
+ROOM_WIDTH = NUM_CARRES * (CARRE_WIDTH + CARRE_SPACING) - CARRE_SPACING
+ROOM_HEIGHT = SCREEN_HEIGHT
 
 # Thèmes
 THEME = [
     "GUERRE",
     "PAIX",
-    "SANTE MENTALE",
     "EMOTIONS",
     "NATURE",
     "ABSTRAIT",
@@ -26,7 +31,6 @@ THEME = [
 THEME_STYLES = {
     "GUERRE": (255, 0, 0),
     "PAIX": (0, 255, 0),
-    "SANTE MENTALE": (128, 0, 128),
     "EMOTIONS": (255, 165, 0),
     "NATURE": (34, 139, 34),
     "ABSTRAIT": (75, 0, 130),
@@ -38,12 +42,11 @@ THEME_STYLES = {
 # Dictionnaire pour les images de fond des thèmes
 THEME_IMAGES = {
     "GUERRE": os.path.join("Client", "Interface", "Thème_nature.png"),
-    "PAIX": os.path.join("Client", "Interface", "Thème_paix.png"),
-    "SANTE MENTALE": os.path.join("Client", "Interface", "Thème_sante_mentale.png"),
-    "EMOTIONS": os.path.join("Client", "Interface", "Thème_emotions.png"),
+    "PAIX": os.path.join("Client", "Interface", "Thème_guerre.png"),
+    "EMOTIONS": os.path.join("Client", "Interface", "Thème_emotion.png"),
     "NATURE": os.path.join("Client", "Interface", "Thème_nature.png"),
     "ABSTRAIT": os.path.join("Client", "Interface", "Thème_abstrait.png"),
-    "NOTRE COLLECTION PERSONEL": os.path.join("Client", "Interface", "Thème_collection_personel.png"),
+    "NOTRE COLLECTION PERSONEL": os.path.join("Client", "Interface", "Thème_art_pla.png"),
     "STREET ART": os.path.join("Client", "Interface", "Thème_street_art.png"),
     "DIVERS": os.path.join("Client", "Interface", "Thème_divers.png")
 }
@@ -94,6 +97,12 @@ def run_room(theme_index):
     door_right = Door("right")
     door_left = Door("left")
 
+    # Coordonnées des carrés violets pour les tableaux
+    tableau_positions = [
+        (x * (CARRE_WIDTH + CARRE_SPACING), SCREEN_HEIGHT // 2 - CARRE_WIDTH // 2)
+        for x in range(NUM_CARRES)
+    ]
+
     while running:
         clock.tick(FPS)
 
@@ -116,14 +125,18 @@ def run_room(theme_index):
 
         # Vérification de collision avec les portes
         if camera_x + SCREEN_WIDTH >= ROOM_WIDTH:  # Arrivée à la porte droite
-            print(f"Porte droite atteinte! Transition vers le thème suivant : {THEME[theme_index + 1] if theme_index + 1 < len(THEME) else 'Fin'}")
+            # print(f"Porte droite atteinte! Transition vers le thème suivant : {THEME[theme_index + 1] if theme_index + 1 < len(THEME) else 'Fin'}")
             return theme_index + 1
         if camera_x <= 0:  # Arrivée à la porte gauche
-            print(f"Porte gauche atteinte! Retour au thème précédent : {THEME[theme_index - 1] if theme_index - 1 >= 0 else 'Début'}")
+            # print(f"Porte gauche atteinte! Retour au thème précédent : {THEME[theme_index - 1] if theme_index - 1 >= 0 else 'Début'}")
             return max(theme_index - 1, 0)
 
         # Affichage
         screen.blit(background_image, (-camera_x, 0))  # Afficher l'image de fond décalée par la position de la caméra
+
+        # Affichage des carrés violets
+        for pos in tableau_positions:
+            pygame.draw.rect(screen, (128, 0, 128), (pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH))
 
         # Affichage du thème
         theme_text = font.render(theme, True, (0, 0, 0))
