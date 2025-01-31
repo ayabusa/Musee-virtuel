@@ -143,6 +143,13 @@ def run_room(theme_index):
         text_rect = theme_text.get_rect(center=(SCREEN_WIDTH // 2, 50))
         screen.blit(theme_text, text_rect)
 
+        # le carré s'agrandit quand on passe la souris dessus
+        # m_pos = pygame.mouse.get_pos()
+        # for pos in tableau_positions:
+        #     rect = pygame.Rect(pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH)
+        #     if rect.collidepoint(m_pos):
+        #         CARRE_WIDTH = 250
+
         pygame.display.flip()
 
 # Boucle pour les salles
