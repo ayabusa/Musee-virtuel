@@ -1,4 +1,4 @@
-import urllib.request, json
+import urllib.request, json, pygame, os
 
 address = "http://localhost:5000"
 def get_couloir_liste()->dict:
@@ -32,9 +32,17 @@ def get_tableaux_from_couloir_id(id: int)->dict:
         return res
     except:
         return None
-    
+
+def get_tableau_image(tableau_id:int)->object:
+    """Retourne l'image avec l'id specifie sous la forme d'un ..."""
+    f = open('tmp/img'+str(tableau_id)+'.png','wb')
+    f.write(urllib.request.urlopen(address+"/get_tableau_image/"+str(tableau_id)).read())
+    f.close()
+    return pygame.image.load('tmp/img'+str(tableau_id)+'.png')
+
 # Pour tester si tout marche
 """
 print(get_couloir_liste())
 print(get_tableaux_from_couloir_id(2))
 """
+get_tableau_image(2)

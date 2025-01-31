@@ -1,6 +1,6 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask
+from flask import Flask, send_file
 from flask import jsonify
 import bdd
 
@@ -41,6 +41,9 @@ def get_tableaux_from_couloir(couloir_id):
                                    "format": db.recuperer_format_tableau(idt)}
     return jsonify(liste_des_tableaux)
 
+@app.route('/get_tableau_image/<tableau_id>')
+def get_tableau_image(tableau_id):
+    return send_file("images/tableau_"+str(tableau_id)+".png", mimetype='image/png')
 
 # main driver function
 if __name__ == '__main__':
