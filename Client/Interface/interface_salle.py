@@ -1,5 +1,6 @@
 import pygame
 import os  # Pour la gestion des chemins compatibles avec tous les systèmes
+import api
 
 # Initialisation de Pygame
 pygame.init()
