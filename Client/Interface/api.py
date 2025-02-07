@@ -1,5 +1,6 @@
 import urllib.request, json, pygame, os
 
+os.mkdir("tmp")
 address = "http://localhost:5000"
 def get_couloir_liste()->dict:
     """Retourne un dictionnaire ayant pour cle l'id du couloir et pour valeur son nom/theme

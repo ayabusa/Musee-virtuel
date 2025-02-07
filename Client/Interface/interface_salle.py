@@ -1,7 +1,11 @@
 import pygame
 import os  # Pour la gestion des chemins compatibles avec tous les systèmes
 import api
+<<<<<<< HEAD
 from api import *
+=======
+
+>>>>>>> 8a9d792c03a0cabbf8cc50a74975b370f6a7b1dd
 # Initialisation de Pygame
 pygame.init()
 
