@@ -1,5 +1,6 @@
 import pygame
 import os  # Pour la gestion des chemins compatibles avec tous les systèmes
+import api
 from api import *
 # Initialisation de Pygame
 pygame.init()
@@ -123,7 +124,7 @@ def run_room(theme_index):
     theme_color = THEME_STYLES[theme]
 
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
-    background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
+    background_image = pygame.image.load(api.get_tableau_image[2]).convert()
     background_image = pygame.transform.scale(background_image, (ROOM_WIDTH, SCREEN_HEIGHT))
 
     # Mettre à jour le titre de la fenêtre
@@ -186,6 +187,13 @@ def run_room(theme_index):
         theme_text = font.render(theme, True, (0, 0, 0))
         text_rect = theme_text.get_rect(center=(SCREEN_WIDTH // 2, 50))
         screen.blit(theme_text, text_rect)
+
+        # le carré s'agrandit quand on passe la souris dessus
+        # m_pos = pygame.mouse.get_pos()
+        # for pos in tableau_positions:
+        #     rect = pygame.Rect(pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH)
+        #     if rect.collidepoint(m_pos):
+        #         CARRE_WIDTH = 250
 
         pygame.display.flip()
 
