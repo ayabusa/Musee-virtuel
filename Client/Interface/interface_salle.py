@@ -1,11 +1,7 @@
 import pygame
 import os  # Pour la gestion des chemins compatibles avec tous les systèmes
 import api
-<<<<<<< HEAD
 from api import *
-=======
-
->>>>>>> 8a9d792c03a0cabbf8cc50a74975b370f6a7b1dd
 # Initialisation de Pygame
 pygame.init()
 
@@ -193,14 +189,12 @@ def run_room(theme_index):
         screen.blit(theme_text, text_rect)
 
         # le carré s'agrandit quand on passe la souris dessus
-        m_pos = pygame.mouse.get_pos()
-        for pos in tableau_positions:
-            rectangle = pygame.Rect(pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH)
-            if rectangle.collidepoint(m_pos):
-                pygame.draw.rect(screen, (128, 0, 128), (pos[0] - camera_x - 10, pos[1] - 10, CARRE_WIDTH + 20, CARRE_WIDTH + 20))  # Carré agrandi
-            else:
-                pygame.draw.rect(screen, (128, 0, 128), (pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH))  # Carré normal
-        
+        # m_pos = pygame.mouse.get_pos()
+        # for pos in tableau_positions:
+        #     rect = pygame.Rect(pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH)
+        #     if rect.collidepoint(m_pos):
+        #         CARRE_WIDTH = 250
+
         pygame.display.flip()
 
 # Boucle pour les salles
