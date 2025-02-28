@@ -11,7 +11,7 @@ GREEN = (0,255,0)
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Musée GLANF")
+pygame.display.set_caption("Musée FLANG")
 clock = pygame.time.Clock()
 # running = True
 
@@ -57,7 +57,7 @@ while True:
     textes = [
         "BIENVENUE",
         "AU",
-        "MUSEE GLANF"
+        "MUSEE FLANG"
     ]
     total_height = 0
     for texte in textes:
