@@ -33,6 +33,7 @@ CREATE TABLE SALLE(
     theme TEXT NOT NULL
 );
 
+/*
 INSERT into AUTEUR VALUES(1,'jean pierre polanreff');
 INSERT into AUTEUR VALUES(2,'zebi la mouche');
 INSERT into TAGS VALUES('puant');
@@ -41,7 +42,4 @@ INSERT into TABLEAUX VALUES(2,'prout',1,2, 2, "portrait", "celui là par contre 
 INSERT into SALLE VALUES(1,'dechet');
 INSERT into SALLE VALUES(2,'wow');
 INSERT into SALLE VALUES(3,'incr');
-
-
-
-
+*/
