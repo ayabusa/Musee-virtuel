@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, csv
 
 class DB:
     def __init__(self):
@@ -9,6 +9,21 @@ class DB:
         self.cur = self.con.cursor()
         self.cur.executescript(sql_script)
         self.con.commit()
+        print("hoy")
+        with open('auteurs.csv', "r", newline='') as csvfile:
+            auteurs_reader = csv.DictReader(csvfile, delimiter=';')
+            for row in auteurs_reader:
+                self.cur.execute("INSERT INTO AUTEUR (id, nom) VALUES ('" + row["id"] + "', '" + row["nom"] + "');")
+        with open('salles.csv', "r", newline='') as csvfile:
+            salles_reader = csv.DictReader(csvfile, delimiter=';')
+            for row in salles_reader:
+                self.cur.execute("INSERT INTO SALLE (id, theme) VALUES ('" + row["id"] + "', '" + row["theme"] + "');")
+        with open('tableaux.csv', "r", newline='') as csvfile:
+            salles_reader = csv.DictReader(csvfile, delimiter=';')
+            for row in salles_reader:
+                self.cur.execute("INSERT INTO TABLEAUX (id, titre, auteur_id, tag_id, salle_id, format, description, date) VALUES ('" + row["id"] + "', '" + row["titre"] + "', '" + row["auteur_id"] + "', '" + row["tag_id"] + "', '" + row["salle_id"] + "', '" + row["format"] + "', '" + row["description"] + "', '" + row["date"] + "');")
+        
+            
     def recuperer_liste_couloir(self)->list:
         # Renvoie une liste des id de tout les couloirs
         res = self.cur.execute("SELECT id FROM SALLE")
