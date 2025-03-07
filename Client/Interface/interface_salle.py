@@ -1,24 +1,19 @@
 import pygame
 import os  # Pour la gestion des chemins compatibles avec tous les systèmes
-import api
-from api import *
+
 # Initialisation de Pygame
 pygame.init()
 
 # Constantes de la fenêtre
-pygame.init()
-
-# Constantes de la fenêtre
-SCREEN_WIDTH, SCREEN_HEIGHT = 1900, 1080
+SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080  # Dimensions de l'écran
+ROOM_WIDTH, ROOM_HEIGHT = 3800, SCREEN_HEIGHT  # Dimensions de la salle plus grandes que l'écran
 FPS = 60
-
-# Dimensions des carrés et espacement
 CARRE_WIDTH = 200
 CARRE_HEIGH = 400
-CARRE_SPACING = 100
 NUM_CARRES = 10
+CARRE_SPACING = 100
 ROOM_WIDTH = NUM_CARRES * (CARRE_WIDTH + CARRE_SPACING) - CARRE_SPACING
-ROOM_HEIGHT = SCREEN_HEIGHT
+
 
 # Thèmes
 THEME = [
@@ -48,16 +43,31 @@ THEME_IMAGES = {
     "EMOTIONS": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_emotion.png"),
     "NATURE": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_nature.png"),
     "ABSTRAIT": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_abstrait.png"),
-    "NOTRE COLLECTION PERSONEL": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_pla.png"),
+    "NOTRE COLLECTION PERSONEL": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png"),
     "STREET ART": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_street_art.png"),
-    "DIVERS": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_pla.png")
+    "DIVERS": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png")
 }
 
-# Initialisation de l'écran
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+# Dictionnaire pour les tableaux
+TABLEAUX = [
+    {"titre": "Tableau 1", "auteur": "Auteur 1", "bio": "Biographie 1"},
+    {"titre": "Tableau 2", "auteur": "Auteur 2", "bio": "Biographie 2"},
+    {"titre": "Tableau 3", "auteur": "Auteur 3", "bio": "Biographie 3"},
+    {"titre": "Tableau 4", "auteur": "Auteur 4", "bio": "Biographie 4"},
+    {"titre": "Tableau 5", "auteur": "Auteur 5", "bio": "Biographie 5"},
+    {"titre": "Tableau 6", "auteur": "Auteur 6", "bio": "Biographie 6"},
+    {"titre": "Tableau 7", "auteur": "Auteur 7", "bio": "Biographie 7"},
+    {"titre": "Tableau 8", "auteur": "Auteur 8", "bio": "Biographie 8"},
+    {"titre": "Tableau 9", "auteur": "Auteur 9", "bio": "Biographie 9"},
+    {"titre": "Tableau 10", "auteur": "Auteur 10", "bio": "Biographie 10"}
+]
+
+# Initialisation de l'écran en mode plein écran
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 
 # Police pour afficher le thème
 font = pygame.font.Font(None, 74)
+text_font = pygame.font.Font(None, 36)
 
 # Classe Joueur
 class Player(pygame.sprite.Sprite):
@@ -124,7 +134,7 @@ def run_room(theme_index):
     theme_color = THEME_STYLES[theme]
 
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
-    background_image = pygame.image.load(api.get_tableau_image[2]).convert()
+    background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
     background_image = pygame.transform.scale(background_image, (ROOM_WIDTH, SCREEN_HEIGHT))
 
     # Mettre à jour le titre de la fenêtre
@@ -146,6 +156,8 @@ def run_room(theme_index):
         for x in range(NUM_CARRES)
     ]
 
+    selected_tableau = None
+
     while running:
         clock.tick(FPS)
 
@@ -153,6 +165,24 @@ def run_room(theme_index):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                # Ajuster les coordonnées de la souris en fonction de la position de la caméra
+                adjusted_mouse_pos = (mouse_pos[0] - camera.camera.x, mouse_pos[1] - camera.camera.y)
+                if selected_tableau is not None:
+                    # Vérifier si la croix noire est cliquée
+                    if 1750 <= mouse_pos[0] <= 1800 and 0 <= mouse_pos[1] <= 50:
+                        selected_tableau = None
+                else:
+                    for i, pos in enumerate(tableau_positions):
+                        if i == 0 or i == len(tableau_positions) - 1:
+                            continue  # Ignorer le premier et le dernier tableau
+                        rect = pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)
+                        if rect.collidepoint(adjusted_mouse_pos):
+                            selected_tableau = i
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    selected_tableau = None
 
         # Gestion des touches
         keys = pygame.key.get_pressed()
@@ -175,25 +205,43 @@ def run_room(theme_index):
         # Affichage
         screen.blit(background_image, camera.apply(pygame.Rect(0, 0, ROOM_WIDTH, SCREEN_HEIGHT)))  # Afficher l'image de fond décalée par la position de la caméra
 
-        # Affichage des sprites avec la caméra
-        for sprite in all_sprites:
-            screen.blit(sprite.image, camera.apply(sprite))
+        if selected_tableau is not None:
+            # Afficher le fond blanc
+            pygame.draw.rect(screen, (255, 255, 255,0), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
 
-        # Affichage des carrés violets
-        for pos in tableau_positions:
-            pygame.draw.rect(screen, (128, 0, 128), camera.apply(pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)))
+            # Afficher le tableau sélectionné agrandi
+            new_pos = (SCREEN_WIDTH // 4 - CARRE_WIDTH // 2, SCREEN_HEIGHT // 2 - CARRE_HEIGH // 2)
+            pygame.draw.rect(screen, (128, 0, 128), pygame.Rect(new_pos[0], new_pos[1], CARRE_WIDTH * 1.5, CARRE_HEIGH * 1.5))
 
-        # Affichage du thème
-        theme_text = font.render(theme, True, (0, 0, 0))
-        text_rect = theme_text.get_rect(center=(SCREEN_WIDTH // 2, 50))
-        screen.blit(theme_text, text_rect)
+            # Afficher le texte associé au tableau sélectionné
+            tableau = TABLEAUX[selected_tableau]
+            text_lines = [
+                f"Titre: {tableau['titre']}",
+                f"Auteur: {tableau['auteur']}",
+                f"Biographie: {tableau['bio']}"
+            ]
+            for j, line in enumerate(text_lines):
+                text_surface = text_font.render(line, True, (0, 0, 0))
+                screen.blit(text_surface, (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50 + j * 40))
 
-        # le carré s'agrandit quand on passe la souris dessus
-        # m_pos = pygame.mouse.get_pos()
-        # for pos in tableau_positions:
-        #     rect = pygame.Rect(pos[0] - camera_x, pos[1], CARRE_WIDTH, CARRE_WIDTH)
-        #     if rect.collidepoint(m_pos):
-        #         CARRE_WIDTH = 250
+            # Afficher la croix noire en haut à droite
+            pygame.draw.line(screen, (0, 0, 0), (1750, 0), (1800, 50), 5)
+            pygame.draw.line(screen, (0, 0, 0), (1800, 0), (1750, 50), 5)
+        else:
+            # Affichage des carrés violets
+            for i, pos in enumerate(tableau_positions):
+                if i == 0 or i == len(tableau_positions) - 1:
+                    continue  # Ignorer le premier et le dernier tableau
+                pygame.draw.rect(screen, (128, 0, 128), camera.apply(pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)))
+
+            # Affichage des sprites avec la caméra
+            for sprite in all_sprites:
+                screen.blit(sprite.image, camera.apply(sprite))
+
+            # Affichage du thème
+            theme_text = font.render(theme, True, (0, 0, 0))
+            text_rect = theme_text.get_rect(center=(SCREEN_WIDTH // 2, 50))
+            screen.blit(theme_text, text_rect)
 
         pygame.display.flip()
 
@@ -201,5 +249,6 @@ def run_room(theme_index):
 theme_index = 0
 while theme_index < len(THEME):
     theme_index = run_room(theme_index)
-    
+
+print("Toutes les salles ont été terminées!")
 pygame.quit()
