@@ -15,13 +15,12 @@ CARRE_SPACING = 100
 THEME = api.get_couloir_liste()
 
 THEME_IMAGES = {
-    "GUERRE": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_guerre.png"),
-    "EMOTIONS": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_emotion.png"),
-    "NATURE": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_nature.png"),
-    "ABSTRAIT": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_abstrait.png"),
-    "NOTRE COLLECTION PERSONEL": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png"),
-    "STREET ART": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_street_art.png"),
-    "DIVERS": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png")
+    "guerre": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_guerre.png"),
+    "abstrait": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_abstrait.png"),
+    "arts plastiques": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png"),
+    "emotion": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_emotion.png"),
+    "nature": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_nature.png"),
+    "street art": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_street_art.png"),
 }
 
 # Obtenir la liste des couloirs
@@ -117,7 +116,7 @@ def run_room(theme_index):
     clock = pygame.time.Clock()
 
     # Définir le thème et la couleur de la salle
-    theme = THEME[theme_index+1]
+    theme = THEME[theme_index]
 
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
     background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
@@ -232,9 +231,11 @@ def run_room(theme_index):
         pygame.display.flip()
 
 # Boucle pour les salles
-theme_index = 0
-while theme_index < len(THEME):
+theme_index = 1
+while True:
     theme_index = run_room(theme_index)
+    if theme_index >= len(THEME):
+        theme_index = 1
 
 print("Toutes les salles ont été terminées!")
 pygame.quit()
