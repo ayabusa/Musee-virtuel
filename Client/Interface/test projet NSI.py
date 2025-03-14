@@ -1,6 +1,6 @@
 import pygame
 import os
-import api 
+import api
 
 # Initialisation de Pygame
 pygame.init()
@@ -12,7 +12,7 @@ FPS = 60
 CARRE_WIDTH = 200
 CARRE_HEIGH = 400
 CARRE_SPACING = 100
-THEME = api.get_couloir_liste()
+THEME = get_couloir_liste()
 
 THEME_IMAGES = {
     "GUERRE": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_guerre.png"),
@@ -25,7 +25,7 @@ THEME_IMAGES = {
 }
 
 # Obtenir la liste des couloirs
-couloirs = api.get_couloir_liste()
+couloirs = get_couloir_liste()
 if couloirs is None:
     print("Erreur lors de la récupération des couloirs")
     exit()
@@ -34,7 +34,7 @@ if couloirs is None:
 couloir_id = list(couloirs.keys())[0]
 
 # Obtenir les tableaux du couloir choisi
-tableaux = api.get_tableaux_from_couloir_id(couloir_id)
+tableaux = get_tableaux_from_couloir_id(couloir_id)
 if tableaux is None:
     print("Erreur lors de la récupération des tableaux")
     exit()
@@ -53,7 +53,7 @@ text_font = pygame.font.Font(None, 36)
 # Charger les images des tableaux
 tableau_images = {}
 for tableau_id in tableaux:
-    tableau_images[tableau_id] = api.get_tableau_image(tableau_id)
+    tableau_images[tableau_id] = get_tableau_image(tableau_id)
 
 # Classe Joueur
 class Player(pygame.sprite.Sprite):
