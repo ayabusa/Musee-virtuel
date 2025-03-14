@@ -5,7 +5,7 @@ class DB:
         with open('bdd.sql', 'r') as sql_file:
             sql_script = sql_file.read()
 
-        self.con = sqlite3.connect("bdd.db")
+        self.con = sqlite3.connect("bdd.db", check_same_thread=False)
         self.cur = self.con.cursor()
         self.cur.executescript(sql_script)
         self.con.commit()
@@ -46,7 +46,7 @@ class DB:
 
     def recuperer_auteur_tableau(self,tableau_id: int)->str:
         # Renvoie l'auteur du tableau à partir de son id
-        res = self.cur.execute("SELECT nom FROM TABLEAUX JOIN AUTEUR ON TABLEAUX.id=AUTEUR.id WHERE TABLEAUX.id=?",(tableau_id,))
+        res = self.cur.execute("SELECT nom FROM TABLEAUX JOIN AUTEUR ON TABLEAUX.auteur_id=AUTEUR.id WHERE TABLEAUX.id=?",(tableau_id,))
         return res.fetchone()[0]
 
     def recuperer_format_tableau(self,tableau_id: int)->str:

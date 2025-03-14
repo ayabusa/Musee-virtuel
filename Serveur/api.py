@@ -20,6 +20,7 @@ def help():
 Voilà l'API pour le musée virtuel, tu peux l'utiliser comme suit:</br>
 GET /get_couloirs_liste</br>
 GET /get_tableaux_from_couloir/&ltcouloir_id&gt</br>
+GET /get_tableau_image/&lttableau_id&gt
 '''
 
 @app.route('/get_couloirs_liste')
