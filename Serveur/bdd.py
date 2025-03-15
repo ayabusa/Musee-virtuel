@@ -10,17 +10,17 @@ class DB:
         self.cur.executescript(sql_script)
         self.con.commit()
         print("hoy")
-        with open('auteurs.csv', "r", newline='') as csvfile:
+        with open('auteurs.csv', "r", newline='', encoding='utf-8') as csvfile:
             auteurs_reader = csv.DictReader(csvfile, delimiter=';')
             for row in auteurs_reader:
                 self.cur.execute("INSERT INTO AUTEUR (id, nom) VALUES ('" + row["id"] + "', '" + row["nom"] + "');")
-        with open('salles.csv', "r", newline='') as csvfile:
+        with open('salles.csv', "r", newline='', encoding='utf-8') as csvfile:
             salles_reader = csv.DictReader(csvfile, delimiter=';')
             for row in salles_reader:
                 self.cur.execute("INSERT INTO SALLE (id, theme) VALUES ('" + row["id"] + "', '" + row["theme"] + "');")
-        with open('tableaux.csv', "r", newline='') as csvfile:
-            salles_reader = csv.DictReader(csvfile, delimiter=';')
-            for row in salles_reader:
+        with open('tableaux.csv', "r", newline='', encoding='latin-1') as csvfile:
+            tab_reader = csv.DictReader(csvfile, delimiter=';')
+            for row in tab_reader:
                 self.cur.execute("INSERT INTO TABLEAUX (id, titre, auteur_id, tag_id, salle_id, format, description, date) VALUES ('" + row["id"] + "', '" + row["titre"] + "', '" + row["auteur_id"] + "', '" + row["tag_id"] + "', '" + row["salle_id"] + "', '" + row["format"] + "', '" + row["description"] + "', '" + row["date"] + "');")
         
             
