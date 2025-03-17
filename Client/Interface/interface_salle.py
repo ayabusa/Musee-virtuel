@@ -29,17 +29,19 @@ if couloirs is None:
     print("Erreur lors de la récupération des couloirs")
     exit()
 
-# Choisir un couloir (par exemple, le premier couloir)
-couloir_id = list(couloirs.keys())[0]
-
-# Obtenir les tableaux du couloir choisi
-tableaux = api.get_tableaux_from_couloir_id(couloir_id)
-if tableaux is None:
-    print("Erreur lors de la récupération des tableaux")
-    exit()
+# Charger les images des tableaux pour chaque couloir
+tableaux_par_couloir = {}
+tableau_images_par_couloir = {}
+for couloir_id, theme in couloirs.items():
+    tableaux = api.get_tableaux_from_couloir_id(couloir_id)
+    if tableaux is None:
+        print(f"Erreur lors de la récupération des tableaux pour le couloir {theme}")
+        continue
+    tableaux_par_couloir[couloir_id] = tableaux
+    tableau_images_par_couloir[couloir_id] = {tableau_id: api.get_tableau_image(tableau_id) for tableau_id in tableaux}
 
 # Calculer la largeur de la salle en fonction du nombre de tableaux
-NUM_CARRES = len(tableaux)
+NUM_CARRES = max(len(tableaux) for tableaux in tableaux_par_couloir.values())
 ROOM_WIDTH = NUM_CARRES * (CARRE_WIDTH + CARRE_SPACING) - CARRE_SPACING
 
 # Initialisation de l'écran en mode plein écran
@@ -48,11 +50,6 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREE
 # Police pour afficher le thème
 font = pygame.font.Font(None, 74)
 text_font = pygame.font.Font(None, 36)
-
-# Charger les images des tableaux
-tableau_images = {}
-for tableau_id in tableaux:
-    tableau_images[tableau_id] = api.get_tableau_image(tableau_id)
 
 # Classe Joueur
 class Player(pygame.sprite.Sprite):
@@ -116,10 +113,13 @@ def run_room(theme_index):
     clock = pygame.time.Clock()
 
     # Définir le thème et la couleur de la salle
-    theme = THEME[theme_index]
+    couloir_id = list(couloirs.keys())[theme_index]
+    theme = couloirs[couloir_id]
+    tableaux = tableaux_par_couloir[couloir_id]
+    tableau_images = tableau_images_par_couloir[couloir_id]
 
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
-    background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
+    background_image = pygame.image.load(THEME_IMAGES[theme.lower()]).convert()
     background_image = pygame.transform.scale(background_image, (ROOM_WIDTH, SCREEN_HEIGHT))
 
     # Mettre à jour le titre de la fenêtre
@@ -231,11 +231,11 @@ def run_room(theme_index):
         pygame.display.flip()
 
 # Boucle pour les salles
-theme_index = 1
+theme_index = 0
 while True:
     theme_index = run_room(theme_index)
     if theme_index >= len(THEME):
-        theme_index = 1
+        theme_index = 0
 
 print("Toutes les salles ont été terminées!")
 pygame.quit()
