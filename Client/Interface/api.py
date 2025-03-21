@@ -21,11 +21,13 @@ def get_couloir_liste()->dict:
 
 def get_tableaux_from_couloir_id(id: int)->dict:
     """Retourne un dictionnaire de dictionnaire ayant pour cle l'id du tableau et pour valeur un dictionnaire avec chaque info
+    ```
     ex:
     {
         1: {'auteur': 'jean pierre polanreff', 'date': '4/4/2024', 'description': 'un super tableau de fifou', 'format': 'paysage', 'nom': 'caca'},
         2: {'auteur': 'zebi la mouche', 'date': '1/1/2027', 'description': 'celui lÃ\xa0 par contre il est guez', 'format': 'portrait', 'nom': 'prout'}
     }
+    ```
     La fonction retourne None si il y a une erreure"""
     contents = urllib.request.urlopen(address+"/get_tableaux_from_couloir/"+str(id)).read()
     try:

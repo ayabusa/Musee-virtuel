@@ -1,6 +1,6 @@
 import pygame
-import os
-import api 
+import os  # Pour la gestion des chemins compatibles avec tous les systèmes
+import api
 
 # Initialisation de Pygame
 pygame.init()
@@ -9,26 +9,45 @@ pygame.init()
 SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080  # Dimensions de l'écran
 ROOM_WIDTH, ROOM_HEIGHT = 3800, SCREEN_HEIGHT  # Dimensions de la salle plus grandes que l'écran
 FPS = 60
-CARRE_WIDTH = 200
-CARRE_HEIGH = 400
-CARRE_SPACING = 100
-THEME = api.get_couloir_liste()
+CARRE_WIDTH = 300
+CARRE_HEIGH = 300
+NUM_CARRES = 10
+CARRE_SPACING = 200
+ROOM_WIDTH = NUM_CARRES * (200 + 100) - 100
 
-THEME_IMAGES = {
-    "guerre": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_guerre.png"),
-    "abstrait": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_abstrait.png"),
-    "arts plastiques": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png"),
-    "emotion": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_emotion.png"),
-    "nature": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_nature.png"),
-    "street art": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_street_art.png"),
+
+# Thèmes
+THEME = [
+    "GUERRE",
+    "ABSTRAIT",
+    "ARTS PLASTIQUES",
+    "EMOTIONS",
+    "NATURE",
+    "STREET ART"
+]
+
+# Couleurs associées aux thèmes
+THEME_STYLES = {
+    "GUERRE": (255, 0, 0),
+    "EMOTIONS": (255, 165, 0),
+    "NATURE": (34, 139, 34),
+    "ABSTRAIT": (75, 0, 130),
+    "NOTRE COLLECTION PERSONEL": (255, 215, 0),
+    "STREET ART": (169, 169, 169),
+    "ARTS PLASTIQUES": (255, 255, 255)
 }
 
-# Obtenir la liste des couloirs
-couloirs = api.get_couloir_liste()
-if couloirs is None:
-    print("Erreur lors de la récupération des couloirs")
-    exit()
+# Dictionnaire pour les images de fond des thèmes
+THEME_IMAGES = {
+    "GUERRE": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_guerre.png"),
+    "ABSTRAIT": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_abstrait.png"),
+    "ARTS PLASTIQUES": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_art_plastique.png"),
+    "EMOTIONS": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_emotion.png"),
+    "NATURE": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_nature.png"),
+    "STREET ART": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_street_art.png"),
+}
 
+<<<<<<< HEAD
 # Charger les images des tableaux pour chaque couloir
 tableaux_par_couloir = {}
 tableau_images_par_couloir = {}
@@ -43,6 +62,18 @@ for couloir_id, theme in couloirs.items():
 # Calculer la largeur de la salle en fonction du nombre de tableaux
 NUM_CARRES = max(len(tableaux) for tableaux in tableaux_par_couloir.values())
 ROOM_WIDTH = NUM_CARRES * (CARRE_WIDTH + CARRE_SPACING) - CARRE_SPACING
+=======
+# Dictionnaire pour les tableaux
+TABLEAUX = [
+    {"titre": "Tableau 1", "auteur": "Auteur 1", "bio": "Biographie 1", "image":None},
+    {"titre": "Tableau 2", "auteur": "Auteur 2", "bio": "Biographie 2", "image":None},
+    {"titre": "Tableau 3", "auteur": "Auteur 3", "bio": "Biographie 3", "image":None},
+    {"titre": "Tableau 4", "auteur": "Auteur 4", "bio": "Biographie 4", "image":None},
+    {"titre": "Tableau 5", "auteur": "Auteur 5", "bio": "Biographie 5", "image":None},
+]
+
+couloir_liste = api.get_couloir_liste()
+>>>>>>> 31d1bc145ff79c21e4e0320559d7c67d6421cbe6
 
 # Initialisation de l'écran en mode plein écran
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
@@ -51,12 +82,46 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREE
 font = pygame.font.Font(None, 74)
 text_font = pygame.font.Font(None, 36)
 
+<<<<<<< HEAD
+=======
+def load_tableaux(salle_id: int)->None:
+    """Charge les tableaux dans la nouvelle salle, concrètement on update TABLEAUX et NUM_CARRES"""
+    global TABLEAUX, NUM_CARRES
+    salle_id += 1
+    TABLEAUX=[{"titre": "NE DOIT PAS APPARAITRE", "auteur": "NE DOIT PAS APPARAITRE", "bio": "NE DOIT PAS APPARAITRE"}]
+    api_tab_liste = api.get_tableaux_from_couloir_id(salle_id)
+    for k, v in api_tab_liste.items():
+        original_image = api.get_tableau_image(int(k)).convert_alpha()
+
+        # Obtenir les dimensions d'origine
+        orig_width, orig_height = original_image.get_size()
+
+        # Calcul du facteur d'échelle pour s'assurer que l'image tient dans 300x300 sans être déformée
+        scale_factor = min(300 / orig_width, 300 / orig_height)
+        new_width = int(orig_width * scale_factor)
+        new_height = int(orig_height * scale_factor)
+
+        # Redimensionner l'image en gardant les proportions
+        image = pygame.transform.scale(original_image, (new_width, new_height))
+
+        # Calcul du facteur d'échelle pour s'assurer que l'image tient dans 300x300 sans être déformée
+        scale_factor = min(600 / orig_width, 600 / orig_height)
+        new_width = int(orig_width * scale_factor)
+        new_height = int(orig_height * scale_factor)
+
+        # Redimensionner l'image en gardant les proportions
+        big_image = pygame.transform.scale(original_image, (new_width, new_height))
+
+        TABLEAUX.append({"titre": v["nom"], "auteur": v["auteur"], "bio": v["description"], "image": image, "big_image": big_image})
+    NUM_CARRES = len(TABLEAUX)+1
+    print("loaded tableaux:",TABLEAUX)
+
+>>>>>>> 31d1bc145ff79c21e4e0320559d7c67d6421cbe6
 # Classe Joueur
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
-        self.image.fill((255, 0, 0))
+        self.image = pygame.image.load(os.path.join("Musee-virtuel", "Client", "Interface", "sprite.png")).convert_alpha()  # Charge l'image du joueur
         self.rect = self.image.get_rect()
         self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position plus haute
         self.speed_x = 0
@@ -113,10 +178,15 @@ def run_room(theme_index):
     clock = pygame.time.Clock()
 
     # Définir le thème et la couleur de la salle
+<<<<<<< HEAD
     couloir_id = list(couloirs.keys())[theme_index]
     theme = couloirs[couloir_id]
     tableaux = tableaux_par_couloir[couloir_id]
     tableau_images = tableau_images_par_couloir[couloir_id]
+=======
+    theme = THEME[theme_index]
+    theme_color = THEME_STYLES[theme]
+>>>>>>> 31d1bc145ff79c21e4e0320559d7c67d6421cbe6
 
     # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
     background_image = pygame.image.load(THEME_IMAGES[theme.lower()]).convert()
@@ -135,7 +205,7 @@ def run_room(theme_index):
     # Initialisation de la caméra
     camera = Camera(ROOM_WIDTH, ROOM_HEIGHT)
 
-    # Coordonnées des tableaux
+    # Coordonnées des carrés violets pour les tableaux
     tableau_positions = [
         (x * (CARRE_WIDTH + CARRE_SPACING), SCREEN_HEIGHT // 2 - CARRE_WIDTH // 2)
         for x in range(NUM_CARRES)
@@ -192,18 +262,19 @@ def run_room(theme_index):
 
         if selected_tableau is not None:
             # Afficher le fond blanc
-            pygame.draw.rect(screen, (255, 255, 255), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
+            pygame.draw.rect(screen, (255, 255, 255,0), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
 
             # Afficher le tableau sélectionné agrandi
-            new_pos = (SCREEN_WIDTH // 4 - CARRE_WIDTH // 2, SCREEN_HEIGHT // 2 - CARRE_HEIGH // 2)
-            pygame.draw.rect(screen, (128, 0, 128), pygame.Rect(new_pos[0], new_pos[1], CARRE_WIDTH * 1.5, CARRE_HEIGH * 1.5))
+            #new_pos = (SCREEN_WIDTH // 4 - CARRE_WIDTH // 2, SCREEN_HEIGHT // 2 - CARRE_HEIGH // 2)
+            #pygame.draw.rect(screen, (128, 0, 128), pygame.Rect(new_pos[0], new_pos[1], CARRE_WIDTH * 1.5, CARRE_HEIGH * 1.5))
+            screen.blit(TABLEAUX[selected_tableau]["big_image"], ((SCREEN_WIDTH - TABLEAUX[selected_tableau]["big_image"].get_width())//10, (SCREEN_HEIGHT - TABLEAUX[selected_tableau]["big_image"].get_height())//2, TABLEAUX[selected_tableau]["big_image"].get_width(), TABLEAUX[selected_tableau]["big_image"].get_height()))
 
             # Afficher le texte associé au tableau sélectionné
-            tableau = tableaux[selected_tableau]
+            tableau = TABLEAUX[selected_tableau]
             text_lines = [
-                f"Titre: {tableau['nom']}",
+                f"Titre: {tableau['titre']}",
                 f"Auteur: {tableau['auteur']}",
-                f"Description: {tableau['description']}"
+                f"Biographie: {tableau['bio']}"
             ]
             for j, line in enumerate(text_lines):
                 text_surface = text_font.render(line, True, (0, 0, 0))
@@ -213,11 +284,13 @@ def run_room(theme_index):
             pygame.draw.line(screen, (0, 0, 0), (1750, 0), (1800, 50), 5)
             pygame.draw.line(screen, (0, 0, 0), (1800, 0), (1750, 50), 5)
         else:
-            # Affichage des images des tableaux
+            # Affichage des carrés violets
             for i, pos in enumerate(tableau_positions):
                 if i == 0 or i == len(tableau_positions) - 1:
                     continue  # Ignorer le premier et le dernier tableau
-                screen.blit(tableau_images[i + 1], camera.apply(pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)))
+                #pygame.draw.rect(screen, (128, 0, 128), camera.apply(pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)))
+                screen.blit(TABLEAUX[i]["image"], camera.apply(pygame.Rect(pos[0], pos[1], TABLEAUX[i]["image"].get_width(), TABLEAUX[i]["image"].get_height())))
+
 
             # Affichage des sprites avec la caméra
             for sprite in all_sprites:
@@ -232,10 +305,16 @@ def run_room(theme_index):
 
 # Boucle pour les salles
 theme_index = 0
+<<<<<<< HEAD
 while True:
     theme_index = run_room(theme_index)
     if theme_index >= len(THEME):
         theme_index = 0
+=======
+while theme_index < len(THEME):
+    load_tableaux(theme_index)
+    theme_index = run_room(theme_index)
+>>>>>>> 31d1bc145ff79c21e4e0320559d7c67d6421cbe6
 
 print("Toutes les salles ont été terminées!")
 pygame.quit()
