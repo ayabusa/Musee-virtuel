@@ -126,9 +126,11 @@ def load_all_tableaux():
 class Player(pygame.sprite.Sprite):
     def __init__(self, room_width):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("Musee-virtuel", "Client", "Interface", "sprite.png")).convert_alpha()  # Charge l'image du joueur
+        # Remplacer l'image par une surface vide ou une couleur unie
+        self.image = pygame.Surface((50, 50))  # Taille arbitraire pour le joueur
+        self.image.fill((18, 212, 138,100))  # Couleur noire (ou choisissez une autre couleur)
         self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position plus haute
+        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position initiale
         self.speed_x = 0
         self.room_width = room_width  # Largeur de la salle
 
@@ -146,7 +148,7 @@ class Door(pygame.sprite.Sprite):
     def __init__(self, position, room_width):
         super().__init__()
         self.image = pygame.Surface((50, SCREEN_HEIGHT))
-        self.image.fill((255, 255, 255))
+        self.image.fill((255, 255, 255,0))
         self.rect = self.image.get_rect()
         if position == "right":
             self.rect.right = room_width  # Utiliser la largeur de la salle
@@ -209,9 +211,10 @@ def run_room(theme_index):
     camera = Camera(room_width, ROOM_HEIGHT)
 
     # Coordonnées des tableaux
+   # Coordonnées des tableaux
     tableau_positions = [
-        (x * (CARRE_WIDTH + CARRE_SPACING), SCREEN_HEIGHT // 2 - CARRE_WIDTH // 2)
-        for x in range(num_tableaux)
+    (x * (CARRE_WIDTH + CARRE_SPACING), SCREEN_HEIGHT // 2 - CARRE_WIDTH // 2 - 200)  # Ajuster la position Y
+    for x in range(num_tableaux)
     ]
 
     selected_tableau = None
@@ -321,6 +324,8 @@ load_all_tableaux()
 # Boucle pour les salles
 theme_index = 0
 while theme_index < len(THEME):
+    if theme_index >=len(THEME):
+        theme_index = 0
     theme_index = run_room(theme_index)
 
 print("Toutes les salles ont été terminées!")
