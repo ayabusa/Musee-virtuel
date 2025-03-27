@@ -52,4 +52,3 @@ def get_tableau_image(tableau_id:int)->object:
 print(get_couloir_liste())
 print(get_tableaux_from_couloir_id(2))
 """
-get_tableau_image(2)
