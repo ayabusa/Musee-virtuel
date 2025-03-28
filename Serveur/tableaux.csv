@@ -1,12 +1,16 @@
-id;titre;auteur_id;tag_id;salle_id;format;description;date
-1;salut;1;1;2;portrait;wow;01/01/2000
-2;hoi;1;2;1;format;zob;02/01/5000
-3;Un roi solicité;1;1;3;portrait;…;31/01/2025
-4;Une maison qui chante;1;1;5;portrait;…;31/01/2025
-5;Une relation embaumé;1;1;4;portrait;…;31/01/2025
-6;Serpent malicieux;1;1;1;portrait;…;31/01/2025
-7;Moyen âge séparé;1;1;5;portrait;…;31/01/2025
-8;Chant enchanteurs;1;1;2;portrait;…;31/01/2025
-9;Une vie partagé;1;1;4;portrait;…;31/01/2025
-10;Des échanges avisés;1;1;4;portrait;…;31/01/2025
-11;Un amour convoité;1;1;2;portrait;…;31/01/2025
+id;nom
+1;zebi
+2;Van Gogh
+3;Claude Monet
+4;Hokusai
+5;Caspar David Friedrich
+6;Nicolas Poussin
+7;Camille Pissarro
+8;Paul Cézanne
+9;Piet Mondrian
+10;Wassily Kandinsky
+11;Rothko
+12;Kazimir Malevitch
+13;Jackson Pollock
+14;Willem de Kooning
+15;Pablo Picasso
