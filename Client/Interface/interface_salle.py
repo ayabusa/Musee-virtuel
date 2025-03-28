@@ -7,13 +7,11 @@ pygame.init()
 
 # Constantes de la fenêtre
 SCREEN_WIDTH, SCREEN_HEIGHT = 1920, 1080  # Dimensions de l'écran
-ROOM_WIDTH, ROOM_HEIGHT = 3800, SCREEN_HEIGHT  # Dimensions de la salle plus grandes que l'écran
+ROOM_HEIGHT = SCREEN_HEIGHT  # Hauteur de la salle
 FPS = 60
 CARRE_WIDTH = 300
 CARRE_HEIGH = 300
-NUM_CARRES = 10
 CARRE_SPACING = 200
-ROOM_WIDTH = NUM_CARRES * (200 + 100) - 100
 
 # Thèmes
 THEME = [
@@ -46,17 +44,6 @@ THEME_IMAGES = {
     "STREET ART": os.path.join("Musee-virtuel", "Client", "Interface", "Thème_street_art.png"),
 }
 
-# Dictionnaire pour les tableaux
-TABLEAUX = [
-    {"titre": "Tableau 1", "auteur": "Auteur 1", "bio": "Biographie 1", "image": None, "image_no_frame": None},
-    {"titre": "Tableau 2", "auteur": "Auteur 2", "bio": "Biographie 2", "image": None, "image_no_frame": None},
-    {"titre": "Tableau 3", "auteur": "Auteur 3", "bio": "Biographie 3", "image": None, "image_no_frame": None},
-    {"titre": "Tableau 4", "auteur": "Auteur 4", "bio": "Biographie 4", "image": None, "image_no_frame": None},
-    {"titre": "Tableau 5", "auteur": "Auteur 5", "bio": "Biographie 5", "image": None, "image_no_frame": None},
-]
-
-couloir_liste = api.get_couloir_liste()
-
 # Initialisation de l'écran en mode plein écran
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
 
@@ -79,57 +66,73 @@ def draw_frame(image, frame_image):
 def get_frame_image(image):
     """Retourne l'image de cadre appropriée en fonction de l'orientation de l'image."""
     width, height = image.get_size()
-    if width == height:
+    if abs(width - height) <= 20:  # Vérifier si la différence entre largeur et hauteur est <= 20 pixels
         return frame_image_carre
     elif width > height:
         return frame_image_paysage
     else:
         return frame_image_portrait
 
-def load_tableaux(salle_id: int) -> None:
-    """Charge les tableaux dans la nouvelle salle, concrètement on update TABLEAUX et NUM_CARRES"""
-    global TABLEAUX, NUM_CARRES
-    salle_id += 1
-    TABLEAUX = [{"titre": "NE DOIT PAS APPARAITRE", "auteur": "NE DOIT PAS APPARAITRE", "bio": "NE DOIT PAS APPARAITRE", "image": None, "image_no_frame": None}]
-    api_tab_liste = api.get_tableaux_from_couloir_id(salle_id)
-    for k, v in api_tab_liste.items():
-        original_image = api.get_tableau_image(int(k)).convert_alpha()
+# Charger tous les tableaux pour toutes les salles au début
+def load_all_tableaux():
+    """Télécharge tous les tableaux pour toutes les salles et les stocke dans un dictionnaire global."""
+    global TABLEAUX_PAR_SALLE
+    TABLEAUX_PAR_SALLE = {}
+    
+    for salle_id, theme in enumerate(THEME):
+        tableaux = []
+        api_tab_liste = api.get_tableaux_from_couloir_id(salle_id + 1)  # Les IDs des salles commencent à 1
+        if api_tab_liste is None:
+            print(f"Erreur lors de la récupération des tableaux pour la salle {theme}")
+            continue
+        
+        for k, v in api_tab_liste.items():
+            original_image = api.get_tableau_image(int(k)).convert_alpha()
 
-        # Obtenir les dimensions d'origine
-        orig_width, orig_height = original_image.get_size()
+            # Obtenir les dimensions d'origine
+            orig_width, orig_height = original_image.get_size()
 
-        # Calcul du facteur d'échelle pour s'assurer que l'image tient dans 300x300 sans être déformée
-        scale_factor = min(300 / orig_width, 300 / orig_height)
-        new_width = int(orig_width * scale_factor)
-        new_height = int(orig_height * scale_factor)
+            # Calcul du facteur d'échelle pour s'assurer que l'image tient dans 300x300 sans être déformée
+            scale_factor = min(300 / orig_width, 300 / orig_height)
+            new_width = int(orig_width * scale_factor)
+            new_height = int(orig_height * scale_factor)
 
-        # Redimensionner l'image en gardant les proportions
-        image = pygame.transform.scale(original_image, (new_width, new_height))
-        frame_image = get_frame_image(image)
-        image_with_frame = draw_frame(image, frame_image)
+            # Redimensionner l'image en gardant les proportions
+            image = pygame.transform.scale(original_image, (new_width, new_height))
+            frame_image = get_frame_image(image)
+            image_with_frame = draw_frame(image, frame_image)
 
-        # Calcul du facteur d'échelle pour s'assurer que l'image tient dans 600x600 sans être déformée
-        scale_factor = min(600 / orig_width, 600 / orig_height)
-        new_width = int(orig_width * scale_factor)
-        new_height = int(orig_height * scale_factor)
+            # Calcul du facteur d'échelle pour s'assurer que l'image tient dans 600x600 sans être déformée
+            scale_factor = min(600 / orig_width, 600 / orig_height)
+            new_width = int(orig_width * scale_factor)
+            new_height = int(orig_height * scale_factor)
 
-        # Redimensionner l'image en gardant les proportions
-        big_image = pygame.transform.scale(original_image, (new_width, new_height))
-        big_frame_image = get_frame_image(big_image)
-        big_image_with_frame = draw_frame(big_image, big_frame_image)
+            # Redimensionner l'image en gardant les proportions
+            big_image = pygame.transform.scale(original_image, (new_width, new_height))
 
-        TABLEAUX.append({"titre": v["nom"], "auteur": v["auteur"], "bio": v["description"], "image": image_with_frame, "image_no_frame": big_image, "big_image": big_image_with_frame})
-    NUM_CARRES = len(TABLEAUX) + 1
-    print("loaded tableaux:", TABLEAUX)
+            tableaux.append({
+                "titre": v["nom"],
+                "auteur": v["auteur"],
+                "bio": v["description"],
+                "date": v["date"],
+                "image": image_with_frame,
+                "image_no_frame": big_image
+            })
+        
+        TABLEAUX_PAR_SALLE[theme] = tableaux
+    print("Tous les tableaux ont été téléchargés.")
 
 # Classe Joueur
 class Player(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, room_width):
         super().__init__()
-        self.image = pygame.image.load(os.path.join("Musee-virtuel", "Client", "Interface", "sprite.png")).convert_alpha()  # Charge l'image du joueur
+        # Remplacer l'image par une surface vide ou une couleur unie
+        self.image = pygame.Surface((50, 50))  # Taille arbitraire pour le joueur
+        self.image.fill((18, 212, 138,100))  # Couleur noire (ou choisissez une autre couleur)
         self.rect = self.image.get_rect()
-        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position plus haute
+        self.rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 300)  # Position initiale
         self.speed_x = 0
+        self.room_width = room_width  # Largeur de la salle
 
     def update(self):
         self.rect.x += self.speed_x
@@ -137,18 +140,18 @@ class Player(pygame.sprite.Sprite):
         # Limiter le déplacement aux bords de la salle
         if self.rect.left < 0:
             self.rect.left = 0
-        if self.rect.right > ROOM_WIDTH:
-            self.rect.right = ROOM_WIDTH
+        if self.rect.right > self.room_width:
+            self.rect.right = self.room_width
 
 # Classe Porte
 class Door(pygame.sprite.Sprite):
-    def __init__(self, position):
+    def __init__(self, position, room_width):
         super().__init__()
         self.image = pygame.Surface((50, SCREEN_HEIGHT))
-        self.image.fill((255, 255, 255))
+        self.image.fill((255, 255, 255,0))
         self.rect = self.image.get_rect()
         if position == "right":
-            self.rect.right = ROOM_WIDTH
+            self.rect.right = room_width  # Utiliser la largeur de la salle
         elif position == "left":
             self.rect.left = 0
 
@@ -182,31 +185,36 @@ def run_room(theme_index):
     running = True
     clock = pygame.time.Clock()
 
-    # Définir le thème et la couleur de la salle
+    # Définir le thème et récupérer les tableaux de la salle
     theme = THEME[theme_index]
-    theme_color = THEME_STYLES[theme]
+    tableaux = TABLEAUX_PAR_SALLE[theme]
 
-    # Charger l'image de fond associée au thème et la redimensionner à la taille de l'écran
+    # Calculer la largeur de la salle en fonction du nombre de tableaux
+    num_tableaux = len(tableaux)
+    room_width = max(SCREEN_WIDTH, num_tableaux * (CARRE_WIDTH + CARRE_SPACING) - CARRE_SPACING)
+
+    # Charger l'image de fond associée au thème et la redimensionner à la taille de la salle
     background_image = pygame.image.load(THEME_IMAGES[theme]).convert()
-    background_image = pygame.transform.scale(background_image, (ROOM_WIDTH, SCREEN_HEIGHT))
+    background_image = pygame.transform.scale(background_image, (room_width, SCREEN_HEIGHT))
 
     # Mettre à jour le titre de la fenêtre
     pygame.display.set_caption(f"Salle du {theme}")
 
     # Initialisation des sprites
     all_sprites = pygame.sprite.Group()
-    player = Player()
-    door_right = Door("right")
-    door_left = Door("left")
+    player = Player(room_width)  # Passer la largeur de la salle
+    door_right = Door("right", room_width)  # Passer la largeur de la salle
+    door_left = Door("left", room_width)  # Passer la largeur de la salle
     all_sprites.add(player, door_right, door_left)
 
     # Initialisation de la caméra
-    camera = Camera(ROOM_WIDTH, ROOM_HEIGHT)
+    camera = Camera(room_width, ROOM_HEIGHT)
 
-    # Coordonnées des carrés violets pour les tableaux
+    # Coordonnées des tableaux
+   # Coordonnées des tableaux
     tableau_positions = [
-        (x * (CARRE_WIDTH + CARRE_SPACING), SCREEN_HEIGHT // 2 - CARRE_WIDTH // 2)
-        for x in range(NUM_CARRES)
+    (x * (CARRE_WIDTH + CARRE_SPACING), SCREEN_HEIGHT // 2 - CARRE_WIDTH // 2 - 200)  # Ajuster la position Y
+    for x in range(num_tableaux)
     ]
 
     selected_tableau = None
@@ -227,12 +235,18 @@ def run_room(theme_index):
                     if 1750 <= mouse_pos[0] <= 1800 and 0 <= mouse_pos[1] <= 50:
                         selected_tableau = None
                 else:
+                    # Vérifier les hitboxes des tableaux
                     for i, pos in enumerate(tableau_positions):
-                        if i == 0 or i == len(tableau_positions) - 1:
-                            continue  # Ignorer le premier et le dernier tableau
-                        rect = pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)
+                        # Ajuster la hitbox pour qu'elle corresponde exactement au tableau
+                        rect = pygame.Rect(
+                            pos[0] + CARRE_WIDTH // 2,  # Décalage pour corriger la position
+                            pos[1],
+                            CARRE_WIDTH,
+                            CARRE_HEIGH
+                        )
                         if rect.collidepoint(adjusted_mouse_pos):
                             selected_tableau = i
+                            break  # Arrêter la boucle dès qu'un tableau est sélectionné
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     selected_tableau = None
@@ -256,35 +270,42 @@ def run_room(theme_index):
             return max(theme_index - 1, 0)
 
         # Affichage
-        screen.blit(background_image, camera.apply(pygame.Rect(0, 0, ROOM_WIDTH, SCREEN_HEIGHT)))  # Afficher l'image de fond décalée par la position de la caméra
+        screen.blit(background_image, camera.apply(pygame.Rect(0, 0, room_width, SCREEN_HEIGHT)))  # Afficher l'image de fond décalée par la position de la caméra
 
         if selected_tableau is not None:
             # Afficher le fond blanc
-            pygame.draw.rect(screen, (255, 255, 255, 0), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
+            pygame.draw.rect(screen, (255, 255, 255), (0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
 
-            # Afficher le tableau sélectionné agrandi sans cadre
-            screen.blit(TABLEAUX[selected_tableau]["image_no_frame"], ((SCREEN_WIDTH - TABLEAUX[selected_tableau]["image_no_frame"].get_width()) // 10, (SCREEN_HEIGHT - TABLEAUX[selected_tableau]["image_no_frame"].get_height()) // 2, TABLEAUX[selected_tableau]["image_no_frame"].get_width(), TABLEAUX[selected_tableau]["image_no_frame"].get_height()))
+            # Afficher le tableau sélectionné agrandi sans cadre à gauche de l'écran
+            screen.blit(tableaux[selected_tableau]["image_no_frame"], 
+                        (50,  # Position X fixe à gauche avec une marge de 50 pixels
+                         (SCREEN_HEIGHT - tableaux[selected_tableau]["image_no_frame"].get_height()) // 2))  # Centré verticalement
 
-            # Afficher le texte associé au tableau sélectionné
-            tableau = TABLEAUX[selected_tableau]
+            # Afficher le texte associé au tableau sélectionné à droite de l'écran
+            tableau = tableaux[selected_tableau]
             text_lines = [
                 f"Titre: {tableau['titre']}",
                 f"Auteur: {tableau['auteur']}",
-                f"Biographie: {tableau['bio']}"
+                f"Description: {tableau['bio']}",
+                f"Date: {tableau['date']}"
             ]
             for j, line in enumerate(text_lines):
                 text_surface = text_font.render(line, True, (0, 0, 0))
-                screen.blit(text_surface, (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50 + j * 40))
+                screen.blit(text_surface, (SCREEN_WIDTH // 2 + 50,  # Texte à droite de l'écran
+                                           SCREEN_HEIGHT // 2 - 50 + j * 40))
 
             # Afficher la croix noire en haut à droite
             pygame.draw.line(screen, (0, 0, 0), (1750, 0), (1800, 50), 5)
             pygame.draw.line(screen, (0, 0, 0), (1800, 0), (1750, 50), 5)
         else:
-            # Affichage des carrés violets
+            # Affichage des tableaux
             for i, pos in enumerate(tableau_positions):
-                if i == 0 or i == len(tableau_positions) - 1:
-                    continue  # Ignorer le premier et le dernier tableau
-                screen.blit(TABLEAUX[i]["image"], camera.apply(pygame.Rect(pos[0], pos[1], TABLEAUX[i]["image"].get_width(), TABLEAUX[i]["image"].get_height())))
+                if theme == "STREET ART":
+                    # Afficher les tableaux sans cadre
+                    screen.blit(tableaux[i]["image_no_frame"], camera.apply(pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)))
+                else:
+                    # Afficher les tableaux avec cadre
+                    screen.blit(tableaux[i]["image"], camera.apply(pygame.Rect(pos[0], pos[1], CARRE_WIDTH, CARRE_HEIGH)))
 
             # Affichage des sprites avec la caméra
             for sprite in all_sprites:
@@ -297,12 +318,15 @@ def run_room(theme_index):
 
         pygame.display.flip()
 
+# Charger tous les tableaux au début
+load_all_tableaux()
+
 # Boucle pour les salles
 theme_index = 0
 while theme_index < len(THEME):
-    load_tableaux(theme_index)
+    if theme_index >=len(THEME):
+        theme_index = 0
     theme_index = run_room(theme_index)
 
 print("Toutes les salles ont été terminées!")
 pygame.quit()
-    
