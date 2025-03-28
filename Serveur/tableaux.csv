@@ -10,19 +10,35 @@ id;titre;auteur_id;tag_id;salle_id;format;description;date
 9;Une vie partagé;1;1;4;portrait;. . .;31/01/2025
 10;Des échanges avisés;1;1;4;portrait;. . .;31/01/2025
 11;Un amour convoité;1;1;2;portrait;. . .;31/01/2025
-12;Nuit étoilé;2;1;5;portrait;. . .;31/01/2025
-13;Promenade de la falaise a Pourville;3;1;5;portrait;. . .;31/01/2025
-14;La grande vague de Kanagawa;4;1;5;portrait;. . .;31/01/2025
-15;Le voyageur au-dessus de la mer de nuages;5;1;5;portrait;. . .;31/01/2025
-16;Paysage par temps calme;6;1;5;portrait;. . .;31/01/2025
-17;Effet de nuit;7;1;5;portrait;. . .;31/01/2025
-18;Vue de la carrière Bibemus;8;1;5;portrait;. . .;31/01/2025
-19;Le champ de blé aux corbeaux;2;1;5;portrait;. . .;31/01/2025
-20;Composition II en rouge, bleu et jaune;9;1;2;portrait;. . .;31/01/2025
-21;L arbre rouge;9;1;2;portrait;. . .;31/01/2025
-22;Composition X;10;1;2;portrait;. . .;31/01/2025
-23;Rouille et bleu;11;1;2;portrait;. . .;31/01/2025
-24;Fondateur de suprématisme;12;1;2;portrait;. . .;31/01/2025
-25;Blue Poles;13;1;2;portrait;. . .;31/01/2025
-26;Woman I;14;1;2;portrait;. . .;31/01/2025
-27;Les demoiselles d Avignon;15;1;2;portrait;. . .;31/01/2025
+12;Nuit étoilé;2;1;5;portrait;. . .;
+13;Promenade de la falaise a Pourville;3;1;5;portrait;. . .;
+14;La grande vague de Kanagawa;4;1;5;portrait;. . .;
+15;Le voyageur au-dessus de la mer de nuages;5;1;5;portrait;. . .;
+16;Paysage par temps calme;6;1;5;portrait;. . .;
+17;Effet de nuit;7;1;5;portrait;. . .;
+18;Vue de la carrière Bibemus;8;1;5;portrait;. . .;
+19;Le champ de blé aux corbeaux;2;1;5;portrait;. . .;
+20;Composition II en rouge, bleu et jaune;9;1;2;portrait;. . .;
+21;L arbre rouge;9;1;2;portrait;. . .;
+22;Composition X;10;1;2;portrait;. . .;
+23;Rouille et bleu;11;1;2;portrait;. . .;
+24;Fondateur de suprématisme;12;1;2;portrait;. . .;
+25;Blue Poles;13;1;2;portrait;. . .;
+26;Woman I;14;1;2;portrait;. . .;
+27;Les demoiselles d Avignon;15;1;2;portrait;. . .;
+28;Le trois mai 1808 à Madrid;16;1;2;portrait;. . .;
+29;Effet d un abus dans la nuit;17;1;2;portrait;. . .;
+30;L accroché;18;1;2;portrait;. . .;
+31;Assaut sous les gaz;19;1;2;portrait;. . .;
+32;CND Soldiers;20;1;2;portrait;. . .;
+33;Photo manifestation;21;1;2;portrait;. . .;
+34;Manif brésil;22;1;2;portrait;. . .;
+35;Photo protestation;23;1;2;portrait;. . .;
+36;La petite fille au ballon;24;1;2;portrait;. . .;
+37;We the youth;25;1;2;portrait;. . .;
+38;Hope (Obama poster);26;1;2;portrait;. . .;
+39;Love wont tear us apart;27;1;2;portrait;. . .;
+40;Le baiser mortel;28;1;2;portrait;. . .;
+41;Graffiti is a crime;29;1;2;portrait;. . .;
+42;La marianne;30;1;2;portrait;. . .;
+43;Coexist;31;1;2;portrait;. . .;
