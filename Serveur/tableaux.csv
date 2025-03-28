@@ -1,16 +1,28 @@
-id;nom
-1;zebi
-2;Van Gogh
-3;Claude Monet
-4;Hokusai
-5;Caspar David Friedrich
-6;Nicolas Poussin
-7;Camille Pissarro
-8;Paul C�zanne
-9;Piet Mondrian
-10;Wassily Kandinsky
-11;Rothko
-12;Kazimir Malevitch
-13;Jackson Pollock
-14;Willem de Kooning
-15;Pablo Picasso
+id;titre;auteur_id;tag_id;salle_id;format;description;date
+1;salut;1;1;2;portrait;wow;01/01/2000
+2;hoi;1;2;1;format;zob;02/01/5000
+3;Un roi solicité;1;1;3;portrait;. . .;31/01/2025
+4;Une maison qui chante;1;1;5;portrait;. . .;31/01/2025
+5;Une relation embaumé;1;1;4;portrait;. . .;31/01/2025
+6;Serpent malicieux;1;1;1;portrait;. . .;31/01/2025
+7;Moyen âge séparé;1;1;5;portrait;. . .;31/01/2025
+8;Chant enchanteurs;1;1;2;portrait;. . .;31/01/2025
+9;Une vie partagé;1;1;4;portrait;. . .;31/01/2025
+10;Des échanges avisés;1;1;4;portrait;. . .;31/01/2025
+11;Un amour convoité;1;1;2;portrait;. . .;31/01/2025
+12;Nuit étoilé;2;1;5;portrait;. . .;31/01/2025
+13;Promenade de la falaise a Pourville;3;1;5;portrait;. . .;31/01/2025
+14;La grande vague de Kanagawa;4;1;5;portrait;. . .;31/01/2025
+15;Le voyageur au-dessus de la mer de nuages;5;1;5;portrait;. . .;31/01/2025
+16;Paysage par temps calme;6;1;5;portrait;. . .;31/01/2025
+17;Effet de nuit;7;1;5;portrait;. . .;31/01/2025
+18;Vue de la carrière Bibemus;8;1;5;portrait;. . .;31/01/2025
+19;Le champ de blé aux corbeaux;2;1;5;portrait;. . .;31/01/2025
+20;Composition II en rouge, bleu et jaune;9;1;2;portrait;. . .;31/01/2025
+21;L arbre rouge;9;1;2;portrait;. . .;31/01/2025
+22;Composition X;10;1;2;portrait;. . .;31/01/2025
+23;Rouille et bleu;11;1;2;portrait;. . .;31/01/2025
+24;Fondateur de suprématisme;12;1;2;portrait;. . .;31/01/2025
+25;Blue Poles;13;1;2;portrait;. . .;31/01/2025
+26;Woman I;14;1;2;portrait;. . .;31/01/2025
+27;Les demoiselles d Avignon;15;1;2;portrait;. . .;31/01/2025
